@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Epic Emoji Challenges - حسام</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* تعريف متغيرات CSS لسهولة التعديل على الألوان والمسافات */
+  :root {
+    --primary-blue: #2a9df4;
+    --secondary-blue: #2380d9;
+    --background-light: #f0f2f5; /* لون خلفية خفيف */
+    --card-background: white;
+    --text-color-dark: #333;
+    --error-red: #f44336;
+    --success-green: #4CAF50;
+    --neutral-gray: #ddd;
+    --neutral-gray-hover: #ccc;
+    --border-radius-medium: 8px;
+    --border-radius-large: 12px;
+    --box-shadow-soft: 0 8px 15px rgba(0,0,0,0.1);
+    --box-shadow-hover: 0 12px 20px rgba(0,0,0,0.15);
+
+    /* ألوان وتنسيقات خاصة بالتصميم الجديد للقائمة */
+    --menu-bg-color: #F8F7F4; /* لون خلفية أوف-وايت للقائمة */
+    --button-border-color: #000; /* لون الحدود السوداء السميكة للأزرار */
+    --button-inner-bg: #EAE8E4; /* لون الجزء الداخلي الفاتح للأزرار */
+    --button-text-color: #555; /* لون نص اسم الطور */
+
+    /* متغيرات الثيم */
+    --page-bg: var(--background-light);
+    --main-card-bg: var(--menu-bg-color);
+    --text-primary: var(--text-color-dark);
+    --button-normal-bg: var(--primary-blue);
+    --button-normal-text: white;
+    --button-secondary-bg: var(--neutral-gray);
+    --button-secondary-text: var(--text-color-dark);
+    --wavy-line-color: #333;
+  }
+
+  /* الثيم الداكن */
+  body.dark-theme {
+    --page-bg: #222;
+    --main-card-bg: #333;
+    --text-primary: #eee;
+    --button-normal-bg: #555;
+    --button-normal-text: white;
+    --button-secondary-bg: #444;
+    --button-secondary-text: #eee;
+    --wavy-line-color: #eee;
+  }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--page-bg); /* استخدام متغير الثيم */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    direction: rtl;
+    color: var(--text-primary); /* استخدام متغير الثيم */
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.5s ease, color 0.5s ease; /* انتقال سلس عند تغيير الثيم */
+  }
+
+  /* الشاشات الرئيسية (Intro, Menu, Game, Settings) */
+  #introScreen, #menu, #game, #settingsScreen {
+    max-width: 480px;
+    width: 90%;
+    margin: 20px auto;
+    background: var(--main-card-bg); /* استخدام متغير الثيم */
+    border-radius: var(--border-radius-large);
+    padding: 30px 20px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1); /* ظل موحد للشاشات */
+    position: relative;
+    overflow: hidden;
+    animation: fadeIn 0.5s ease-out;
+    transition: background-color 0.5s ease, color 0.5s ease;
+  }
+
+  /* تنسيق شاشة المقدمة */
+  #introScreen h1 {
+    font-size: 2.5em;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+    font-weight: 700;
+  }
+  #introScreen .intro-button {
+    margin: 15px auto;
+    padding: 15px 30px;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 40px; /* شكل بيضاوي */
+    border: 2px solid var(--button-border-color); /* حدود سوداء */
+    background: none; /* إزالة الخلفية الافتراضية */
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    font-weight: bold;
+    width: 80%; /* عرض الأزرار */
+    max-width: 300px;
+  }
+  #introScreen .intro-button:hover {
+    background: rgba(0,0,0,0.05); /* تأثير هوفر خفيف */
+    transform: translateY(-3px);
+  }
+
+  /* تنسيق شاشة الإعدادات */
+  #settingsScreen h2 {
+    font-size: 1.8em;
+    color: var(--text-primary);
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+  .settings-section {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid var(--neutral-gray);
+    border-radius: var(--border-radius-medium);
+    background-color: var(--card-background); /* خلفية بيضاء داخل قسم الإعدادات */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: background-color 0.5s ease;
+  }
+  .settings-section h3 {
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+  }
+  .theme-options button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    border-radius: var(--border-radius-medium);
+    border: 1px solid var(--text-color-dark);
+    background: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .theme-options button.active {
+    background: var(--primary-blue);
+    color: white;
+    border-color: var(--primary-blue);
+  }
+  .theme-options button:hover:not(.active) {
+    background: rgba(0,0,0,0.05);
+  }
+
+
+  /* تصميم القائمة الرئيسية (اختيار الأطوار) */
+  #menu h1 {
+    font-size: 1.8em;
+    margin-bottom: 40px;
+    color: var(--text-primary); /* استخدام متغير الثيم */
+    position: relative;
+    display: inline-block;
+  }
+  #menu h1::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150%;
+    height: 10px;
+    /* لتغيير لون الخط المتعرج مع الثيم، سيتم تحديثه بـ JS */
+  }
+
+  #menu .modes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .mode-button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .mode-button:hover {
+    transform: translateY(-5px);
+  }
+
+  .mode-button-inner {
+    width: 90px;
+    height: 90px;
+    border: 3px solid var(--button-border-color);
+    border-radius: 25%;
+    background-color: var(--button-inner-bg); /* استخدام متغير الثيم */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background-color 0.5s ease;
+  }
+
+  /* Updated CSS for the new icon images */
+  .mode-icon {
+    width: 45px; /* Adjust as needed */
+    height: 45px; /* Adjust as needed */
+    object-fit: contain; /* Ensures the image scales within its bounds without cropping */
+    margin-bottom: 5px;
+  }
+
+  .wavy-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .wavy-line {
+    width: 30px;
+    height: 2px;
+    /* سيتم تحديثه بـ JS ليتوافق مع الثيم */
+  }
+
+  .mode-name {
+    font-size: 1.1em;
+    color: var(--button-text-color); /* استخدام متغير الثيم */
+    margin-top: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: color 0.5s ease;
+  }
+
+  /* تنسيق الزر المنفرد في المنتصف */
+  #rewardsModeButtonContainer {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+  }
+  #rewardsModeButtonContainer .mode-button-inner {
+    width: 100px;
+    height: 100px;
+  }
+  /* Specific adjustment for the rewards icon if it needs to be larger */
+  #rewardsModeButtonContainer .mode-icon {
+    width: 55px; /* Larger size for rewards icon */
+    height: 55px;
+  }
+
+
+  /* الـ CSS الخاص بشاشة اللعبة */
+  #game h2 {
+    color: var(--primary-blue);
+    margin-bottom: 25px;
+    font-weight: 700;
+    font-size: 1.8em;
+  }
+  button:not(.mode-button):not(.intro-button):not(.theme-options button) {
+    margin: 10px;
+    padding: 14px 25px;
+    font-size: 19px;
+    cursor: pointer;
+    border-radius: var(--border-radius-medium);
+    border: none;
+    background: var(--button-normal-bg);
+    color: var(--button-normal-text);
+    transition: all 0.3s ease;
+    font-weight: bold;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  }
+  button:not(.mode-button):not(.intro-button):not(.theme-options button):hover {
+    background: var(--secondary-blue);
+    transform: translateY(-3px);
+    box-shadow: var(--box-shadow-hover);
+  }
+
+  /* حاوية الإيموجي */
+  #emojiContainer {
+    position: relative; /* لتحديد موضع التأثيرات المطلقة داخله */
+    width: 130px;
+    height: 130px;
+    margin: 25px auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+  }
+
+  #emojiImg, #emojiPlaceholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease-out;
+  }
+  #emojiImg.loading {
+      opacity: 0;
+  }
+  #emojiPlaceholder {
+      background-size: cover;
+      background-position: center;
+      display: none;
+  }
+  #emojiPlaceholder.show {
+      display: block;
+  }
+
+  /* طبقات التأثيرات الجديدة التي تغطي الشاشة بالكامل */
+  .full-screen-overlay {
+    position: fixed; /* لتغطية الشاشة بأكملها بغض النظر عن محتوى الصفحة */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999; /* تأكد أنها أعلى من كل شيء آخر */
+    display: none; /* مخفية افتراضياً */
+    transition: opacity 0.1s ease-out; /* انتقال سريع لظهور/اختفاء التأثير */
+  }
+
+  /* تأثير المربعات السوداء (سيتم ملؤه بـ JS) */
+  #blackSquaresFullScreenOverlay {
+    background-color: transparent; /* اجعل الخلفية شفافة، المربعات هي التي ستكون معتمة */
+    overflow: hidden; /* لإخفاء أي مربعات تتجاوز الحدود */
+  }
+  /* نمط المربع الواحد داخل overlay */
+  .black-square {
+      position: absolute;
+      background-color: black; /* لون أسود معتم */
+      border-radius: 5px; /* حواف دائرية خفيفة */
+  }
+
+  /* تأثير الخطوط الخضراء المتحركة */
+  #greenLinesFullScreenOverlay {
+    background: repeating-linear-gradient(
+      to bottom,
+      #0F0 0px, /* لون أخضر فاقع */
+      #0F0 10px,
+      transparent 10px,
+      transparent 30px
+    );
+    animation: scrollLinesFullScreen 2s linear infinite; /* حركة أسرع */
+    opacity: 1; /* غير شفافة */
+    display: none; /* تأكد من إخفائها افتراضياً */
+  }
+  @keyframes scrollLinesFullScreen {
+    from { background-position: 0 0; }
+    to { background-position: 0 100%; }
+  }
+
+  /* تأثير البكسلة على كامل الشاشة (باستخدام backdrop-filter) */
+  #pixelateFullScreenOverlay {
+    background: rgba(0,0,0,0.1); /* خلفية خفيفة لتمييز التأثير */
+    backdrop-filter: pixelate(10px); /* تطبيق البكسلة على ما تحتها */
+    -webkit-backdrop-filter: pixelate(10px); /* لدعم الويب كيت */
+    display: none; /* تأكد من إخفائها افتراضياً */
+  }
+
+
+  #choices {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 25px;
+  }
+  #choices button {
+    background: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+    min-width: 120px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  #choices button:hover {
+    background: var(--neutral-gray-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  }
+  #choices button.correct-feedback {
+      background: var(--success-green);
+      color: white;
+      box-shadow: 0 0 10px var(--success-green);
+  }
+  #choices button.wrong-feedback {
+      background: var(--error-red);
+      color: white;
+      box-shadow: 0 0 10px var(--error-red);
+  }
+
+  #timer, #hearts {
+    font-size: 20px;
+    margin: 15px 0 10px;
+    font-weight: bold;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #hearts {
+    color: var(--error-red);
+  }
+  #hearts img {
+    width: 30px;
+    height: 30px;
+    margin: 0 2px;
+    vertical-align: middle;
+  }
+  #hearts span {
+    margin-right: 5px;
+    color: var(--text-primary);
+  }
+
+  #boxMsg {
+    font-weight: bold;
+    margin: 20px 0;
+    font-size: 1.1em;
+    color: var(--primary-blue);
+  }
+  #result {
+    font-size: 22px;
+    margin-top: 20px;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  }
+  #result.show {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  #result.correct {
+      color: var(--success-green);
+  }
+  #result.wrong {
+      color: var(--error-red);
+  }
+  /* أزرار الرجوع في الإعدادات وشاشة اللعبة */
+  #backToIntroBtn, #backBtn {
+    background: var(--error-red);
+    color: white;
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 17px;
+    min-width: unset;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  }
+  #backToIntroBtn:hover, #backBtn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  }
+
+
+  /* رسوم متحركة بسيطة للتلاشي */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* استجابة التصميم للشاشات الصغيرة */
+  @media (max-width: 600px) {
+    #menu .modes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    #rewardsModeButtonContainer {
+        grid-column: 1 / -1;
+    }
+    #introScreen .intro-button {
+      width: 90%;
+    }
+  }
+
+  @media (max-width: 400px) {
+    #menu .modes-grid {
+      grid-template-columns: 1fr;
+    }
+    #rewardsModeButtonContainer {
+        grid-column: 1 / -1;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="blackSquaresFullScreenOverlay" class="full-screen-overlay"></div>
+<div id="greenLinesFullScreenOverlay" class="full-screen-overlay"></div>
+<div id="pixelateFullScreenOverlay" class="full-screen-overlay"></div>
+
+<div id="introScreen">
+  <h1>* Epic Emoji Challenges *</h1>
+  <button class="intro-button" onclick="showMenu()">ابدأ اللعبة</button>
+  <button class="intro-button" onclick="showSettingsScreen()">الإعدادات</button>
+</div>
+
+<div id="menu" style="display:none;">
+  <h1>اختر طورك يا بطل 🎮:</h1>
+  <div class="modes-grid">
+    <button class="mode-button" onclick="startGame('classic')">
+      <div class="mode-button-inner">
+        <img class="mode-icon" src="./icons/classic.png" alt="Classic Mode Icon" />
+        <div class="wavy-lines">
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+        </div>
+      </div>
+      <span class="mode-name">طور كلاسيكي</span>
+    </button>
+
+    <button class="mode-button" onclick="startGame('speed')">
+      <div class="mode-button-inner">
+        <img class="mode-icon" src="./icons/speed.png" alt="Speed Mode Icon" />
+        <div class="wavy-lines">
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+        </div>
+      </div>
+      <span class="mode-name">طور السرعة القصوى</span>
+    </button>
+
+    <button class="mode-button" onclick="startGame('survival')">
+      <div class="mode-button-inner">
+        <img class="mode-icon" src="./icons/survival.png" alt="Survival Mode Icon" />
+        <div class="wavy-lines">
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+        </div>
+      </div>
+      <span class="mode-name">طور تحدي البقاء</span>
+    </button>
+
+    <button class="mode-button" onclick="startGame('tricky')">
+      <div class="mode-button-inner">
+        <img class="mode-icon" src="./icons/tricky.png" alt="Tricky Mode Icon" />
+        <div class="wavy-lines">
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+          <div class="wavy-line"></div>
+        </div>
+      </div>
+      <span class="mode-name">طور خدعة العين</span>
+    </button>
+
+    <div id="rewardsModeButtonContainer">
+      <button class="mode-button" onclick="startGame('rewards')">
+        <div class="mode-button-inner">
+          <img class="mode-icon" src="./icons/rewards.png" alt="Rewards Mode Icon" />
+          <div class="wavy-lines">
+            <div class="wavy-line"></div>
+            <div class="wavy-line"></div>
+            <div class="wavy-line"></div>
+          </div>
+        </div>
+        <span class="mode-name">طور الجوائز والعشوائية</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="settingsScreen" style="display:none;">
+    <h2>الإعدادات</h2>
+    <div class="settings-section">
+        <h3>سمة اللعبة</h3>
+        <div class="theme-options">
+            <button id="lightThemeBtn" onclick="applyTheme('light')">فاتح</button>
+            <button id="darkThemeBtn" onclick="applyTheme('dark')">داكن</button>
+        </div>
+    </div>
+    <button id="backToIntroBtn" onclick="showIntroScreen()">🔙 الرجوع للقائمة الرئيسية</button>
+</div>
+
+
+<div id="game" style="display:none;">
+  <h2 id="gameTitle"></h2>
+  <div id="timer"></div>
+  <div id="hearts"></div>
+  <div id="emojiContainer">
+    <div id="emojiPlaceholder"></div>
+    <img id="emojiImg" src="" alt="emoji" />
+  </div>
+
+  <div id="choices">
+    <button onclick="checkAnswer('apple')">Apple</button>
+    <button onclick="checkAnswer('google')">Google</button>
+    <button onclick="checkAnswer('microsoft')">Microsoft</button>
+  </div>
+  <div id="boxMsg"></div>
+  <div id="result"></div>
+  <button id="backBtn" onclick="backToMenu()">🔙 الرجوع للقائمة</button>
+</div>
+
+<script>
+const HEART_IMAGE_URL = "https://em-content.zobj.net/source/google/428/red-heart_2764-fe0f.png";
+const LOADING_GIF_URL = "https://lh5.googleusercontent.com/proxy/OUqG0HgVNVMNorlPCmI4VgJa-3h7uHLkkMy9vdJ0eRsQlvJBytFUS-HvuW-O9EJd-c9xB7KAqlwby4Fzp59g1705FzBuP-F8dC1ZaBQtmLeCu5i6FfSd6Mmzh8mjOwgrEYZwy5UStg"; // هذا الرابط لا يعمل كـ GIF تحميل
+
+const emojiList = [
+  { src: "https://em-content.zobj.net/source/apple/391/red-heart_2764-fe0f.png", answer: "apple" },
+  { src: "https://em-content.zobj.net/source/google/387/red-heart_2764-fe0f.png", answer: "google" },
+  { src: "https://em-content.zobj.net/source/microsoft/379/red-heart_2764-fe0f.png", answer: "microsoft" },
+  { src: "https://em-content.zobj.net/source/apple/391/smiling-face-with-heart-eyes_1f60d.png", answer: "apple" },
+  { src: "https://em-content.zobj.net/source/google/387/smiling-face-with-heart-eyes_1f60d.png", answer: "google" },
+  { src: "https://em-content.zobj.net/source/microsoft/379/smiling-face-with-heart-eyes_1f60d.png", answer: "microsoft" },
+  { src: "https://em-content.zobj.net/source/apple/391/alien_1f47d.png", answer: "apple" },
+  { src: "https://em-content.zobj.net/source/google/387/alien_1f47d.png", answer: "google" },
+  { src: "https://em-content.zobj.net/source/microsoft/379/alien_1f47d.png", answer: "microsoft" },
+  { src: "https://em-content.zobj.net/source/apple/391/pizza_1f355.png", answer: "apple" },
+  { src: "https://em-content.zobj.net/source/google/387/pizza_1f355.png", answer: "google" },
+  { src: "https://em-content.zobj.net/source/microsoft/379/pizza_1f355.png", answer: "microsoft" },
+  { src: "https://em-content.zobj.net/source/apple/391/smiling-face-with-sunglasses_1f60e.png", answer: "apple" },
+  { src: "https://em-content.zobj.net/source/google/387/smiling-face-with-sunglasses_1f60e.png", answer: "google" },
+  { src: "https://em-content.zobj.net/source/microsoft/379/smiling-face-with-sunglasses_1f60e.png", answer: "microsoft" },
+  { src: "https://em-content.zobj.net/source/apple/391/pouting-face_1f621.png", answer: "apple" },
+  { src: "https://em-content.zobj.net/source/google/387/pouting-face_1f621.png", answer: "google" },
+  { src: "https://em-content.zobj.net/source/microsoft/379/pouting-face_1f621.png", answer: "microsoft" },
+  { src: "https://em-content.zobj.net/source/apple/391/troll_1f9cc.png", answer: "apple" },
+  { src: "https://em-content.zobj.net/source/google/387/troll_1f9cc.png", answer: "google" },
+  { src: "https://em-content.zobj.net/source/microsoft/379/troll_1f9cc.png", answer: "microsoft" }
+];
+
+let currentIndex = -1;
+let usedIndices = [];
+let currentMode = "";
+let timerId = null;
+let trickyEffectTimer = null; // مؤقت خاص بتأثيرات خدعة العين
+let timeLeft = 0;
+let hearts = 3;
+let score = 0;
+let choicesButtons = [];
+
+const introScreen = document.getElementById("introScreen");
+const menu = document.getElementById("menu");
+const game = document.getElementById("game");
+const settingsScreen = document.getElementById("settingsScreen");
+
+const gameTitle = document.getElementById("gameTitle");
+const emojiImg = document.getElementById("emojiImg");
+const emojiPlaceholder = document.getElementById("emojiPlaceholder");
+const resultText = document.getElementById("result");
+const timerDiv = document.getElementById("timer");
+const heartsDiv = document.getElementById("hearts");
+const boxMsg = document.getElementById("boxMsg");
+const choicesContainer = document.getElementById("choices");
+
+const lightThemeBtn = document.getElementById("lightThemeBtn");
+const darkThemeBtn = document.getElementById("darkThemeBtn");
+
+// عناصر تأثيرات خدعة العين الجديدة التي تغطي الشاشة بالكامل
+const blackSquaresFullScreenOverlay = document.getElementById("blackSquaresFullScreenOverlay");
+const greenLinesFullScreenOverlay = document.getElementById("greenLinesFullScreenOverlay"); // أضف هذا السطر
+const pixelateFullScreenOverlay = document.getElementById("pixelateFullScreenOverlay"); // أضف هذا السطر
+
+
+// Function to show a screen and hide others
+function showScreen(screenToShow) {
+  introScreen.style.display = "none";
+  menu.style.display = "none";
+  game.style.display = "none";
+  settingsScreen.style.display = "none";
+  screenToShow.style.display = "block";
+}
+
+function showIntroScreen() {
+  showScreen(introScreen);
+  // Clear any active game state or timers when returning to intro
+  clearInterval(timerId);
+  clearTrickyEffect();
+}
+
+function showMenu() {
+  showScreen(menu);
+  // Update wavy lines color based on current theme when menu is shown
+  updateWavyLineColors();
+}
+
+function showSettingsScreen() {
+  showScreen(settingsScreen);
+  // Highlight the active theme button
+  const currentTheme = localStorage.getItem('theme') || 'light';
+  if (currentTheme === 'light') {
+    lightThemeBtn.classList.add('active');
+    darkThemeBtn.classList.remove('active');
+  } else {
+    darkThemeBtn.classList.add('active');
+    lightThemeBtn.classList.remove('active');
+  }
+}
+
+function backToMenu() {
+  clearInterval(timerId);
+  clearTrickyEffect();
+  showMenu();
+}
+
+function startGame(mode) {
+  currentMode = mode;
+  score = 0;
+  usedIndices = []; // Reset used emojis for a new game
+  hearts = 3; // Reset hearts for survival mode
+
+  // Set game title based on mode
+  switch (currentMode) {
+    case 'classic':
+      gameTitle.textContent = "الطور الكلاسيكي";
+      timerDiv.style.display = 'none'; // No timer in classic
+      heartsDiv.style.display = 'none'; // No hearts in classic
+      break;
+    case 'speed':
+      gameTitle.textContent = "طور السرعة القصوى";
+      timerDiv.style.display = 'flex';
+      heartsDiv.style.display = 'none';
+      break;
+    case 'survival':
+      gameTitle.textContent = "طور تحدي البقاء";
+      timerDiv.style.display = 'none';
+      heartsDiv.style.display = 'flex';
+      updateHeartsDisplay();
+      break;
+    case 'tricky':
+      gameTitle.textContent = "طور خدعة العين";
+      timerDiv.style.display = 'none';
+      heartsDiv.style.display = 'none';
+      break;
+    case 'rewards':
+      gameTitle.textContent = "طور الجوائز والعشوائية";
+      timerDiv.style.display = 'none';
+      heartsDiv.style.display = 'none';
+      break;
+  }
+
+  // Clear previous results/messages
+  resultText.classList.remove('show', 'correct', 'wrong');
+  boxMsg.textContent = "";
+
+  // Prepare choice buttons
+  choicesContainer.innerHTML = ''; // Clear existing buttons
+  choicesButtons = ['apple', 'google', 'microsoft'].map(company => {
+    const button = document.createElement('button');
+    button.onclick = () => checkAnswer(company);
+    button.textContent = company.charAt(0).toUpperCase() + company.slice(1); // Capitalize first letter
+    choicesContainer.appendChild(button);
+    return button; // Store reference to the button
+  });
+
+  showScreen(game);
+  loadNewEmoji();
+}
+
+function loadNewEmoji() {
+  clearTrickyEffect(); // Clear any existing tricky effects before loading new emoji
+
+  // Check if all emojis have been used
+  if (usedIndices.length === emojiList.length) {
+    if (currentMode === 'survival') {
+      endGame(`أحسنت! لقد أكملت جميع الإيموجي في طور البقاء! نقاطك: ${score}`);
+    } else {
+      endGame("لقد أكملت جميع الإيموجي! تهانينا!");
+    }
+    return;
+  }
+
+  let newIndex;
+  do {
+    newIndex = Math.floor(Math.random() * emojiList.length);
+  } while (usedIndices.includes(newIndex));
+
+  currentIndex = newIndex;
+  usedIndices.push(currentIndex);
+
+  const emoji = emojiList[currentIndex];
+
+  emojiImg.classList.add('loading');
+  emojiImg.src = ''; // Clear current image
+  emojiPlaceholder.style.backgroundImage = `url(${LOADING_GIF_URL})`;
+  emojiPlaceholder.classList.add('show');
+
+  // Preload image
+  const imgPreload = new Image();
+  imgPreload.src = emoji.src;
+  imgPreload.onload = () => {
+    emojiImg.src = emoji.src;
+    emojiImg.classList.remove('loading');
+    emojiPlaceholder.classList.remove('show');
+    resetChoicesFeedback();
+
+    if (currentMode === 'speed') {
+      startTimer(5); // 5 seconds for speed mode
+    }
+
+    if (currentMode === 'tricky') {
+      applyTrickyEffect(); // Apply a random tricky effect
+    }
+  };
+  imgPreload.onerror = () => {
+    console.error("Failed to load emoji image:", emoji.src);
+    boxMsg.textContent = "خطأ في تحميل الصورة، الرجاء المحاولة مرة أخرى.";
+    // Fallback or skip to next emoji
+    setTimeout(loadNewEmoji, 1000);
+  };
+}
+
+
+function checkAnswer(selectedAnswer) {
+  clearInterval(timerId); // Stop timer immediately on answer
+  clearTrickyEffect(); // Clear any active tricky effects
+
+  const correctAnswer = emojiList[currentIndex].answer;
+  const isCorrect = (selectedAnswer === correctAnswer);
+
+  // Apply feedback to buttons
+  choicesButtons.forEach(button => {
+    const company = button.textContent.toLowerCase();
+    if (company === correctAnswer) {
+      button.classList.add('correct-feedback');
+    } else if (company === selectedAnswer && !isCorrect) {
+      button.classList.add('wrong-feedback');
+    }
+    button.disabled = true; // Disable all buttons after an answer
+  });
+
+  if (isCorrect) {
+    score++;
+    boxMsg.textContent = "إجابة صحيحة! 🎉";
+    resultText.textContent = "صحيح!";
+    resultText.classList.remove('wrong');
+    resultText.classList.add('show', 'correct');
+  } else {
+    boxMsg.textContent = `إجابة خاطئة. الإجابة الصحيحة كانت ${correctAnswer.toUpperCase()}.`;
+    resultText.textContent = "خاطئ!";
+    resultText.classList.remove('correct');
+    resultText.classList.add('show', 'wrong');
+
+    if (currentMode === 'survival') {
+      hearts--;
+      updateHeartsDisplay();
+      if (hearts <= 0) {
+        endGame(`انتهت القلوب! انتهت اللعبة. نقاطك: ${score}`);
+        return; // Stop game if no hearts left
+      }
+    }
+  }
+
+  setTimeout(() => {
+    resultText.classList.remove('show'); // Hide feedback after a delay
+    boxMsg.textContent = ""; // Clear message
+    choicesButtons.forEach(button => button.disabled = false); // Re-enable buttons
+    loadNewEmoji();
+  }, 1500); // 1.5 seconds delay before next emoji
+}
+
+function startTimer(duration) {
+  timeLeft = duration;
+  timerDiv.textContent = `الوقت المتبقي: ${timeLeft} ثواني`;
+
+  clearInterval(timerId); // Clear any existing timer
+  timerId = setInterval(() => {
+    timeLeft--;
+    timerDiv.textContent = `الوقت المتبقي: ${timeLeft} ثواني`;
+
+    if (timeLeft <= 0) {
+      clearInterval(timerId);
+      boxMsg.textContent = "انتهى الوقت!";
+      resultText.textContent = "خاطئ!";
+      resultText.classList.remove('correct');
+      resultText.classList.add('show', 'wrong');
+
+      if (currentMode === 'survival') {
+        hearts--;
+        updateHeartsDisplay();
+        if (hearts <= 0) {
+          endGame(`انتهت القلوب! انتهت اللعبة. نقاطك: ${score}`);
+          return;
+        }
+      }
+
+      setTimeout(() => {
+        resultText.classList.remove('show');
+        boxMsg.textContent = "";
+        choicesButtons.forEach(button => button.disabled = false);
+        loadNewEmoji();
+      }, 1500);
+    }
+  }, 1000);
+}
+
+function updateHeartsDisplay() {
+  heartsDiv.innerHTML = `<span>القلوب: </span>`;
+  for (let i = 0; i < hearts; i++) {
+    const heartImg = document.createElement('img');
+    heartImg.src = HEART_IMAGE_URL;
+    heartImg.alt = "Heart";
+    heartsDiv.appendChild(heartImg);
+  }
+}
+
+function resetChoicesFeedback() {
+  choicesButtons.forEach(button => {
+    button.classList.remove('correct-feedback', 'wrong-feedback');
+    button.disabled = false;
+  });
+}
+
+function endGame(message) {
+  clearInterval(timerId);
+  clearTrickyEffect();
+  boxMsg.textContent = message;
+  // Optionally hide game elements and show a "Play Again" button or return to menu
+  setTimeout(() => {
+    showMenu(); // Return to menu after a short delay
+  }, 3000);
+}
+
+// Tricky Mode Effects
+function applyTrickyEffect() {
+  const effects = [
+    'none', // No effect
+    'black_squares',
+    'green_lines',
+    'pixelate'
+  ];
+  const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+
+  clearTrickyEffect(); // Clear previous effects
+
+  switch (randomEffect) {
+    case 'black_squares':
+      boxMsg.textContent = "خدعة العين: مربعات سوداء!";
+      blackSquaresFullScreenOverlay.style.display = 'block';
+      createBlackSquares();
+      trickyEffectTimer = setTimeout(clearTrickyEffect, 3000); // Effect lasts 3 seconds
+      break;
+    case 'green_lines':
+      boxMsg.textContent = "خدعة العين: خطوط متحركة!";
+      greenLinesFullScreenOverlay.style.display = 'block';
+      trickyEffectTimer = setTimeout(clearTrickyEffect, 3000);
+      break;
+    case 'pixelate':
+      boxMsg.textContent = "خدعة العين: بكسلة الشاشة!";
+      pixelateFullScreenOverlay.style.display = 'block';
+      trickyEffectTimer = setTimeout(clearTrickyEffect, 3000);
+      break;
+    case 'none':
+    default:
+      boxMsg.textContent = "خدعة العين: لا يوجد تأثير هذه المرة.";
+      break;
+  }
+}
+
+function clearTrickyEffect() {
+  clearTimeout(trickyEffectTimer);
+  blackSquaresFullScreenOverlay.style.display = 'none';
+  blackSquaresFullScreenOverlay.innerHTML = ''; // Clear squares
+  greenLinesFullScreenOverlay.style.display = 'none';
+  pixelateFullScreenOverlay.style.display = 'none';
+  if (currentMode === 'tricky') {
+     boxMsg.textContent = ""; // Clear tricky message
+  }
+}
+
+function createBlackSquares() {
+  const overlay = blackSquaresFullScreenOverlay;
+  const numSquares = 50; // Number of squares
+  for (let i = 0; i < numSquares; i++) {
+    const square = document.createElement('div');
+    square.classList.add('black-square');
+    const size = Math.random() * 80 + 20; // Size between 20px and 100px
+    const x = Math.random() * (window.innerWidth - size);
+    const y = Math.random() * (window.innerHeight - size);
+    const opacity = Math.random() * 0.7 + 0.3; // Opacity between 0.3 and 1.0
+
+    square.style.width = `${size}px`;
+    square.style.height = `${size}px`;
+    square.style.left = `${x}px`;
+    square.style.top = `${y}px`;
+    square.style.opacity = opacity;
+    square.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
+    overlay.appendChild(square);
+
+    // Animate squares slightly
+    setTimeout(() => {
+        square.style.transform = `scale(${Math.random() * 0.5 + 0.7})`; // Scale between 0.7 and 1.2
+    }, 100);
+  }
+}
+
+// Theme functionality
+function applyTheme(theme) {
+  document.body.classList.remove('light-theme', 'dark-theme');
+  document.body.classList.add(`${theme}-theme`);
+  localStorage.setItem('theme', theme);
+  updateThemeButtons(theme);
+  updateWavyLineColors(); // Update wavy lines when theme changes
+}
+
+function updateThemeButtons(activeTheme) {
+  lightThemeBtn.classList.remove('active');
+  darkThemeBtn.classList.remove('active');
+  if (activeTheme === 'light') {
+    lightThemeBtn.classList.add('active');
+  } else {
+    darkThemeBtn.classList.add('active');
+  }
+}
+
+function updateWavyLineColors() {
+    const wavyLines = document.querySelectorAll('.wavy-line');
+    const rootStyles = getComputedStyle(document.documentElement);
+    const textColor = rootStyles.getPropertyValue('--wavy-line-color').trim(); // Get color from CSS variable
+
+    wavyLines.forEach(line => {
+        line.style.backgroundColor = textColor;
+    });
+
+    // Update the wavy line under the menu title
+    const menuTitle = document.querySelector('#menu h1');
+    if (menuTitle) {
+        // Remove existing pseudo-element style if any
+        menuTitle.style.setProperty('--pseudo-before-background', 'none');
+
+        // Dynamically add a style for the pseudo-element's background
+        const styleTag = document.getElementById('menuTitleWavyStyle') || document.createElement('style');
+        styleTag.id = 'menuTitleWavyStyle';
+        // Use a repeating linear gradient to create the wavy effect
+        styleTag.textContent = `
+            #menu h1::before {
+                background: repeating-linear-gradient(
+                    135deg,
+                    ${textColor} 0,
+                    ${textColor} 5px,
+                    transparent 5px,
+                    transparent 10px
+                );
+                background-size: 20px 10px;
+                animation: wavyLineAnimation 1s linear infinite;
+            }
+            @keyframes wavyLineAnimation {
+                from { background-position: 0 0; }
+                to { background-position: 20px 0; }
+            }
+        `;
+        document.head.appendChild(styleTag);
+    }
+}
+
+
+// Initialize theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+  showIntroScreen(); // Show intro screen initially
+});
+
+</script>
+
+</body>
+</html>
